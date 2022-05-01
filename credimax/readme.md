@@ -35,3 +35,16 @@ alternatively, you can pass the details to the config of the function.
     }
 
 3- The function will return to you a URL that you can use to initiate the payment.
+
+**Example**
+
+    import  CreateCredimaxSession  from  '@404-software/credimax'
+
+    await CreateCredimaxSession({
+        orderId: "123",
+        totalAmount: "200.500",
+        address: {
+    	    city:  "Manama",
+    	    street:  "Block 1, Street 2, Building 3",
+    	},
+    })
