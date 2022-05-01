@@ -29,7 +29,7 @@ declare module '@404-software/credimax' {
 		totalAmount,
 		address,
 		config,
-	}: CredimaxSession): string
+	}: CredimaxSession): Promise<string>
 
 	export default CreateCredimaxSession
 }
