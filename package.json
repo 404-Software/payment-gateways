@@ -1,0 +1,15 @@
+{
+	"name": "payment-gateways",
+	"version": "beta",
+	"repository": "https://github.com/404-Software/payment-gateways.git",
+	"author": "404 Software",
+	"license": "UNLICENSED",
+	"devDependencies": {
+		"@404-software/eslint-config": "^1.0.10",
+		"eslint": "^8.14.0",
+		"prettier": "^2.6.2"
+	},
+	"eslintConfig": {
+		"extends": "@404-software/eslint-config"
+	}
+}
