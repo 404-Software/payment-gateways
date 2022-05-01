@@ -4,7 +4,9 @@ This package helps in generating a Credimax (Bahrain) payment session using a li
 
 API VERSION: 64
 
-# How to use:
+<br/><br/>
+
+# How to use
 
 1- you can set the following environment variables:
 
@@ -15,7 +17,7 @@ API VERSION: 64
     CREDIMAX_API_PASSWORD="API Password"
 
 alternatively, you can pass these details to the config of the function directly mentioned in the next step.
-
+<br/><br/><br/>
 2- You need to pass the following object to the function:
 
     {
@@ -36,9 +38,9 @@ alternatively, you can pass these details to the config of the function directly
       }
     }
 
-3- The function will return to you a URL that you can use to initiate the payment.
+<br/><br/>
 
-**Example**
+# Example
 
     import CreateCredimaxSession from '@404-software/credimax'
 
