@@ -21,7 +21,7 @@ module.exports = async ({ order, address, config }) => {
 	let sessionId = ''
 	await axios({
 		method: 'POST',
-		url: `https://credimax.gateway.mastercard.com/api/rest/version/63/merchant/${
+		url: `https://credimax.gateway.mastercard.com/api/rest/version/64/merchant/${
 			CREDIMAX_MERCHANT_ID || config.merchantId
 		}/session`,
 		auth: {

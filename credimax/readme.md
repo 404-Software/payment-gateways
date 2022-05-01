@@ -2,7 +2,7 @@
 
 This package helps in generating a Credimax (Bahrain) payment session using a link that can be passed to the user to pay using Credimax's hosted session.
 
-API VERSION: 63
+API VERSION: 64
 
 # How to use:
 
