@@ -19,11 +19,13 @@ alternatively, you can pass the details to the config of the function.
 2- You need to pass the following object to the function:
 
     {
-    	orderId: *String || Number*,
-    	totalAmount: *String || Number*,
+    	order: {
+        id: *String || Number*,
+        total: *String || Number*
+      },
     	address: {
-    		street: *String*,
-    		city: *String*
+    		city: *String*,
+    		street: *String*
     	},
     	config (If not using environment variables): {
     		merchantId: *String*,
@@ -41,8 +43,10 @@ alternatively, you can pass the details to the config of the function.
     import  CreateCredimaxSession  from  '@404-software/credimax'
 
     await CreateCredimaxSession({
-        orderId: "123",
-        totalAmount: "200.500",
+        order: {
+          id: "123",
+          total: 20.5
+        },
         address: {
     	    city:  "Manama",
     	    street:  "Block 1, Street 2, Building 3",

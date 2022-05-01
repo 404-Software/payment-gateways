@@ -1,6 +1,6 @@
 const axios = require('axios')
 
-module.exports = async ({ orderId, totalAmount, address, config }) => {
+module.exports = async ({ order, address, config }) => {
 	const CREDIMAX_MERCHANT_ID = process.env.CREDIMAX_MERCHANT_ID
 	const CREDIMAX_API_PASSWORD = process.env.CREDIMAX_API_PASSWORD
 	const CREDIMAX_RETURN_URL = process.env.CREDIMAX_RETURN_URL
@@ -49,17 +49,17 @@ module.exports = async ({ orderId, totalAmount, address, config }) => {
 			},
 			billing: {
 				address: {
-					street: address.street,
-					city: address.city,
 					country: 'BHR',
+					city: address.city,
+					street: address.street,
 				},
 			},
 			order: {
-				id: `${orderId}`,
-				invoiceNumber: `${orderId}`,
+				id: `${order.id}`,
+				invoiceNumber: `${order.id}`,
 				currency: 'BHD',
-				amount: `${totalAmount}`,
-				description: `Order Ref: ${orderId}`,
+				amount: `${order.total}`,
+				description: `Order Ref: ${order.id}`,
 			},
 			transaction: { source: 'INTERNET' },
 		},

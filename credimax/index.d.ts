@@ -1,7 +1,12 @@
 /* eslint-disable no-unused-vars */
 type Address = {
-	street: string
 	city: string
+	street?: string
+}
+
+type Order = {
+	id: string | number
+	total: string | number
 }
 
 type Config = {
@@ -13,8 +18,7 @@ type Config = {
 }
 
 type CredimaxSession = {
-	orderId: string | number
-	totalAmount: string | number
+	order: Order
 	address: Address
 	config?: Config
 }
