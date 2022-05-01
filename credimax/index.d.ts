@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
-type Address = {
-	city: string
-	street?: string
-}
 
 type Order = {
 	id: string | number
 	total: string | number
+}
+
+type Address = {
+	city: string
+	street?: string
 }
 
 type Config = {
