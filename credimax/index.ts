@@ -13,19 +13,19 @@ type Config = {
 	shopName: string
 }
 
-type CrediMaxSession = {
+type CredimaxSession = {
 	orderId: string | number
 	totalAmount: string | number
 	address: Address
 	config?: Config
 }
 
-export const CreateCrediMaxSession = async ({
+export const CreateCredimaxSession = async ({
 	orderId,
 	totalAmount,
 	address,
 	config,
-}: CrediMaxSession) => {
+}: CredimaxSession) => {
 	const CREDIMAX_MERCHANT_ID = process.env.CREDIMAX_MERCHANT_ID
 	const CREDIMAX_API_PASSWORD = process.env.CREDIMAX_API_PASSWORD
 	const CREDIMAX_RETURN_URL = process.env.CREDIMAX_RETURN_URL
