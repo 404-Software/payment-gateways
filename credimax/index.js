@@ -8,7 +8,7 @@ module.exports = async ({ order, address, config }) => {
 	const shopName = process.env.CREDIMAX_SHOP_NAME || config.shopName
 	const testMode = process.env.CREDIMAX_TEST_MODE || config.testMode
 
-	if (!merchantId && !apiPassword && !cancelUrl && !returnUrl && !shopName)
+	if (!merchantId || !apiPassword || !cancelUrl || !returnUrl || !shopName)
 		throw new Error(
 			'The CREDIMAX_SHOP_NAME, CREDIMAX_RETURN_URL, CREDIMAX_CANCEL_URL, CREDIMAX_MERCHANT_ID and CREDIMAX_API_PASSWORD environment variables must be set OR provide a config to the function',
 		)
