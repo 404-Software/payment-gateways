@@ -16,6 +16,7 @@ type Config = {
 	cancelUrl: string
 	returnUrl: string
 	shopName: string
+	testMode?: boolean
 }
 
 type CredimaxSession = {

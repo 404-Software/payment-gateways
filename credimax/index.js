@@ -1,18 +1,20 @@
 const axios = require('axios')
 
 module.exports = async ({ order, address, config }) => {
-	const CREDIMAX_MERCHANT_ID = process.env.CREDIMAX_MERCHANT_ID
-	const CREDIMAX_API_PASSWORD = process.env.CREDIMAX_API_PASSWORD
-	const CREDIMAX_RETURN_URL = process.env.CREDIMAX_RETURN_URL
-	const CREDIMAX_CANCEL_URL = process.env.CREDIMAX_CANCEL_URL
-	const CREDIMAX_SHOP_NAME = process.env.CREDIMAX_SHOP_NAME
+	const merchantId = process.env.CREDIMAX_MERCHANT_ID || config.merchantId
+	const apiPassword = process.env.CREDIMAX_API_PASSWORD || config.APIPassword
+	const cancelUrl = process.env.CREDIMAX_CANCEL_URL || config.cancelUrl
+	const returnUrl = process.env.CREDIMAX_RETURN_URL || config.returnUrl
+	const shopName = process.env.CREDIMAX_SHOP_NAME || config.shopName
+	const testMode = process.env.CREDIMAX_TEST_MODE || config.testMode
 
 	if (
-		(!CREDIMAX_MERCHANT_ID && !config.merchantId) ||
-		(!CREDIMAX_API_PASSWORD && !config.APIPassword) ||
-		(!CREDIMAX_RETURN_URL && !config.returnUrl) ||
-		(!CREDIMAX_CANCEL_URL && !config.cancelUrl) ||
-		(!CREDIMAX_SHOP_NAME && !config.shopName)
+		!merchantId &&
+		!apiPassword &&
+		!cancelUrl &&
+		!returnUrl &&
+		!shopName &&
+		!testMode
 	)
 		throw new Error(
 			'The CREDIMAX_SHOP_NAME, CREDIMAX_RETURN_URL, CREDIMAX_CANCEL_URL, CREDIMAX_MERCHANT_ID and CREDIMAX_API_PASSWORD environment variables must be set OR provide a config to the function',
@@ -21,20 +23,15 @@ module.exports = async ({ order, address, config }) => {
 	let sessionId = ''
 	await axios({
 		method: 'POST',
-		url: `https://credimax.gateway.mastercard.com/api/rest/version/64/merchant/${
-			CREDIMAX_MERCHANT_ID || config.merchantId
-		}/session`,
-		auth: {
-			username: `merchant.${CREDIMAX_MERCHANT_ID || config.merchantId}`,
-			password: CREDIMAX_API_PASSWORD || config.APIPassword,
-		},
+		url: `https://credimax.gateway.mastercard.com/api/rest/version/64/merchant/${merchantId}/session`,
+		auth: { username: `merchant.${merchantId}`, password: apiPassword },
 		data: {
 			apiOperation: 'INITIATE_CHECKOUT',
 			interaction: {
-				operation: 'AUTHORIZE',
+				operation: testMode ? 'AUTHORIZE' : 'PAY',
 				action: { '3DSecure': 'MANDATORY' },
-				cancelUrl: CREDIMAX_CANCEL_URL || config.cancelUrl,
-				returnUrl: CREDIMAX_RETURN_URL || config.returnUrl,
+				cancelUrl,
+				returnUrl,
 				locale: 'en',
 				style: { theme: 'default' },
 				displayControl: {
@@ -45,7 +42,7 @@ module.exports = async ({ order, address, config }) => {
 					paymentTerms: 'SHOW_IF_SUPPORTED',
 					shipping: 'HIDE',
 				},
-				merchant: { name: CREDIMAX_SHOP_NAME || config.shopName },
+				merchant: { name: shopName },
 			},
 			billing: {
 				address: {

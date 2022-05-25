@@ -15,6 +15,7 @@ This package helps in generating a Credimax (Bahrain) payment session using a li
     CREDIMAX_CANCEL_URL="Website's cancel URL"
     CREDIMAX_MERCHANT_ID="Merchant ID"
     CREDIMAX_API_PASSWORD="API Password"
+    CREDIMAX_TEST_MODE=false
 
 alternatively, you can pass these details to the config of the function directly mentioned in the next step.
 <br/><br/><br/>
@@ -35,6 +36,7 @@ alternatively, you can pass these details to the config of the function directly
         cancelUrl: *String*,
         returnUrl: *String*,
         shopName: *String*
+        testMode?: *Boolean* (defaults to false)
       }
     }
 
