@@ -26,12 +26,7 @@ type CredimaxSession = {
 }
 
 declare module '@404-software/credimax' {
-	function CreateCredimaxSession({
-		orderId,
-		totalAmount,
-		address,
-		config,
-	}: CredimaxSession): Promise<string>
+	function CreateCredimaxSession(data: CredimaxSession): Promise<string>
 
 	export default CreateCredimaxSession
 }
