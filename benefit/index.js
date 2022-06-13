@@ -10,7 +10,7 @@ module.exports = async ({ config, order }) => {
 	const iv = process.env.BENEFIT_IV || config.iv
 	const cancelUrl = process.env.BENEFIT_CANCEL_URL || config.cancelUrl
 	const returnUrl = process.env.BENEFIT_RETURN_URL || config.returnUrl
-	const testMode = process.env.BENEFIT_TEST_MODE || config.testMode
+	const testMode = process.env.BENEFIT_TEST_MODE || config.testMode || false
 
 	if (
 		!transportalId ||
