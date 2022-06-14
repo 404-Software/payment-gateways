@@ -1,6 +1,10 @@
 {
 	"name": "@404-software/benefit",
-	"version": "1.0.4",
+	"version": "1.0.20",
 	"main": "index.js",
-	"license": "MIT"
+	"license": "MIT",
+	"dependencies": {
+		"aes-js": "^3.1.2",
+		"axios": "^0.27.2"
+	}
 }

@@ -1,49 +1,51 @@
-const crypto = require('crypto')
+const aesjs = require('aes-js')
 
-const algorithm = 'aes-256-cbc'
-const messageEncoding = 'utf8'
-const cipherEncoding = 'base64'
+const BENEFIT_IV = process.env.BENEFIT_IV
+const BENEFIT_TERMINAL_RESOURCE_KEY = process.env.BENEFIT_TERMINAL_RESOURCE_KEY
 
-const AesEncryption = (message, key, iv) => {
-	const cipher = crypto.createCipheriv(algorithm, key, iv)
-	cipher.setAutoPadding(true)
+function encrypt(data) {
+	const iv = BENEFIT_IV || data.iv
+	const key = BENEFIT_TERMINAL_RESOURCE_KEY || data.key
 
-	return (
-		cipher.update(message, messageEncoding, cipherEncoding) +
-		cipher.final(cipherEncoding)
-	)
+	if (!iv || !key)
+		throw new Error(
+			'The BENEFIT_IV & BENEFIT_TERMINAL_RESOURCE_KEY environment variables must be set OR provide a config to the function',
+		)
+
+	const rkEncryptionIv = aesjs.utils.utf8.toBytes(iv)
+	const enckey = aesjs.utils.utf8.toBytes(key)
+	const aesCtr = new aesjs.ModeOfOperation.cbc(enckey, rkEncryptionIv)
+	const textBytes = aesjs.utils.utf8.toBytes(data.trandata)
+	const encryptedBytes = aesCtr.encrypt(aesjs.padding.pkcs7.pad(textBytes))
+	const encryptedHex = aesjs.utils.hex.fromBytes(encryptedBytes)
+	return encryptedHex
 }
 
-// const AesDecryption = (message, key, iv) => {
-// 	const decipher = crypto.createDecipheriv(algorithm, key, iv)
-// 	decipher.setAutoPadding(true)
+function decrypt(data) {
+	const iv = BENEFIT_IV || data.iv
+	const key = BENEFIT_TERMINAL_RESOURCE_KEY || data.key
 
-// 	return (
-// 		decipher.update(message, cipherEncoding, messageEncoding) +
-// 		decipher.final(messageEncoding)
-// 	)
-// }
+	if (!iv || !key)
+		throw new Error(
+			'The BENEFIT_IV & BENEFIT_TERMINAL_RESOURCE_KEY environment variables must be set OR provide a config to the function',
+		)
 
-const toHexString = byteArray => {
-	return byteArray.toString('hex')
+	const encryptedHex = Buffer.from(data.buffer, 'hex')
+		.toString()
+		.replace('trandata=', '')
+
+	const enckey = aesjs.utils.utf8.toBytes(key)
+	const rkEncryptionIv = aesjs.utils.utf8.toBytes(iv)
+	const encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex)
+	const aesCbc = new aesjs.ModeOfOperation.cbc(enckey, rkEncryptionIv)
+	const decryptedBytes = aesCbc.decrypt(encryptedBytes)
+	const decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes)
+	const cleanedText = `${JSON.stringify(decryptedText, null, 2)
+		.split('\\u0007')[0]
+		.replace('"[{', '[{')}"`.slice(1, -1)
+	const decodedText = decodeURIComponent(cleanedText)
+
+	return JSON.parse(decodedText)[0]
 }
 
-const base64Decode = str => {
-	return Buffer.from(str, 'base64')
-}
-
-const encrypt = (message, key, iv) => {
-	let encrypted = AesEncryption(message, key, iv)
-	encrypted = base64Decode(encrypted)
-	encrypted = toHexString(encrypted)
-
-	return encrypted
-}
-
-// const decrypt = (message, key, iv) => {
-// 	const decrypted = AesDecryption(message, key, iv)
-
-// 	return decrypted
-// }
-
-module.exports = { encrypt }
+module.exports = { encrypt, decrypt }

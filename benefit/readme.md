@@ -18,7 +18,7 @@ This package helps in generating a Benefit (Bahrain) payment session using a lin
 
 alternatively, you can pass these details to the config of the function directly mentioned in the next step.
 <br/><br/><br/>
-2- You need to pass the following object to the function:
+2- You need to pass the following object to the CreateBenefitSession function:
 
     {
       order: {
@@ -40,11 +40,23 @@ alternatively, you can pass these details to the config of the function directly
 
 # Example
 
-    import CreateBenefitSession from '@404-software/benefit'
+    import { CreateBenefitSession } from '@404-software/benefit'
 
     await CreateBenefitSession({
       order: {
         id: "123",
         total: 20.5
       },
+    })
+
+<br/><br/>
+
+# Decrypting Response
+
+    import { DecryptBenefitTrandata } from '@404-software/benefit'
+
+    const buffer = req.body
+
+    await DecryptBenefitTrandata({
+      buffer;
     })
