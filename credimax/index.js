@@ -45,7 +45,7 @@ module.exports = async ({ order, address, config }) => {
 				},
 			},
 			order: {
-				id: `${order.id}`,
+				id: `${order.id}-${Math.round(new Date().getTime() / 1000)}`,
 				invoiceNumber: `${order.id}`,
 				currency: 'BHD',
 				amount: `${order.total}`,
