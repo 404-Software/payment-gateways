@@ -30,22 +30,20 @@ function decrypt(data) {
 			'The BENEFIT_IV & BENEFIT_TERMINAL_RESOURCE_KEY environment variables must be set OR provide a config to the function',
 		)
 
-	const encryptedHex = Buffer.from(data.buffer, 'hex')
-		.toString()
-		.replace('trandata=', '')
+	const convertQuery = query => Object.fromEntries(new URLSearchParams(query))
 
+	const encryptedHex = data.buffer.toString()
+	const { trandata } = convertQuery(encryptedHex)
 	const enckey = aesjs.utils.utf8.toBytes(key)
 	const rkEncryptionIv = aesjs.utils.utf8.toBytes(iv)
-	const encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex)
+	const encryptedBytes = aesjs.utils.hex.toBytes(trandata)
 	const aesCbc = new aesjs.ModeOfOperation.cbc(enckey, rkEncryptionIv)
 	const decryptedBytes = aesCbc.decrypt(encryptedBytes)
 	const decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes)
-	const cleanedText = `${JSON.stringify(decryptedText, null, 2)
-		.split('\\u0007')[0]
-		.replace('"[{', '[{')}"`.slice(1, -1)
-	const decodedText = decodeURIComponent(cleanedText)
+	const cleanedText = decodeURIComponent(decryptedText).replace(/\x0F/g, '')
+	const parsedJson = JSON.parse(cleanedText)
 
-	return JSON.parse(decodedText)[0]
+	return parsedJson[0]
 }
 
 module.exports = { encrypt, decrypt }
