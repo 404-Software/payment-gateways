@@ -26,8 +26,8 @@ alternatively, you can pass these details to the config of the function directly
         total: *String || Number*
       },
       config (ONLY if not using environment variables): {
-        transportalId: *String*,
-        transportalPassword: *String*,
+        tranportalId: *String*,
+        tranportalPassword: *String*,
         terminalResourcekey: *String*,
         iv: *String*,
         cancelUrl: *String*,

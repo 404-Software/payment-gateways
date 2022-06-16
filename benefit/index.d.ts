@@ -6,8 +6,8 @@ type Order = {
 }
 
 type Config = {
-	transportalId: string
-	transportalPassword: string
+	tranportalId: string
+	tranportalPassword: string
 	terminalResourcekey: string
 	iv: string
 	cancelUrl: string
@@ -25,7 +25,7 @@ type DecryptionDataOutput = {
 	date: string
 	authRespCode: string
 	authCode: string
-	transId: number
+	tranId: number
 	trackId: string
 	udf5: string
 	udf6: string
