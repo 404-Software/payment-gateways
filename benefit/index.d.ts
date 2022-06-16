@@ -20,7 +20,7 @@ type BenefitSession = {
 	config?: Config
 }
 
-type DecryptionDataInput = { buffer: Buffer; key?: string; iv?: string }
+type DecryptionDataInput = { buffer: any; key?: string; iv?: string }
 type DecryptionDataOutput = {
 	date: string
 	authRespCode: string

@@ -1,12 +1,12 @@
 const axios = require('axios')
 
 module.exports = async ({ order, address, config }) => {
-	const merchantId = process.env.CREDIMAX_MERCHANT_ID || config.merchantId
-	const apiPassword = process.env.CREDIMAX_API_PASSWORD || config.APIPassword
-	const cancelUrl = process.env.CREDIMAX_CANCEL_URL || config.cancelUrl
-	const returnUrl = process.env.CREDIMAX_RETURN_URL || config.returnUrl
-	const shopName = process.env.CREDIMAX_SHOP_NAME || config.shopName
-	const testMode = process.env.CREDIMAX_TEST_MODE || config.testMode
+	const merchantId = process.env.CREDIMAX_MERCHANT_ID || config?.merchantId
+	const apiPassword = process.env.CREDIMAX_API_PASSWORD || config?.APIPassword
+	const cancelUrl = process.env.CREDIMAX_CANCEL_URL || config?.cancelUrl
+	const returnUrl = process.env.CREDIMAX_RETURN_URL || config?.returnUrl
+	const shopName = process.env.CREDIMAX_SHOP_NAME || config?.shopName
+	const testMode = process.env.CREDIMAX_TEST_MODE === 'true' || config?.testMode
 
 	if (!merchantId || !apiPassword || !cancelUrl || !returnUrl || !shopName)
 		throw new Error(
