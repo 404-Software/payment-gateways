@@ -3,14 +3,14 @@ const axios = require('axios')
 
 const CreateBenefitSession = async ({ config, order }) => {
 	const transportalId =
-		process.env.BENEFIT_TRANSPORTAL_ID || config.transportalId
+		process.env.BENEFIT_TRANSPORTAL_ID || config?.transportalId
 	const transportalPassword =
-		process.env.BENEFIT_TRANSPORTAL_PASSWORD || config.transportalPassword
+		process.env.BENEFIT_TRANSPORTAL_PASSWORD || config?.transportalPassword
 	const terminalResourcekey =
-		process.env.BENEFIT_TERMINAL_RESOURCE_KEY || config.terminalResourcekey
-	const cancelUrl = process.env.BENEFIT_CANCEL_URL || config.cancelUrl
-	const returnUrl = process.env.BENEFIT_RETURN_URL || config.returnUrl
-	const testMode = process.env.BENEFIT_TEST_MODE || config.testMode || false
+		process.env.BENEFIT_TERMINAL_RESOURCE_KEY || config?.terminalResourcekey
+	const cancelUrl = process.env.BENEFIT_CANCEL_URL || config?.cancelUrl
+	const returnUrl = process.env.BENEFIT_RETURN_URL || config?.returnUrl
+	const testMode = process.env.BENEFIT_TEST_MODE || config?.testMode
 
 	if (
 		!transportalId ||
