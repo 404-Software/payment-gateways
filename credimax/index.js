@@ -21,7 +21,7 @@ module.exports = async ({ order, address, config }) => {
 		data: {
 			apiOperation: 'INITIATE_CHECKOUT',
 			interaction: {
-				operation: testMode ? 'AUTHORIZE' : 'PAY',
+				operation: testMode ? 'AUTHORIZE' : 'PURCHASE',
 				action: { '3DSecure': 'MANDATORY' },
 				cancelUrl,
 				returnUrl,
