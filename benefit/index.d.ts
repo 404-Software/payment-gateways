@@ -20,6 +20,7 @@ type BenefitSession = {
 	config?: Config
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type DecryptionDataInput = { buffer: any; key?: string; iv?: string }
 type DecryptionDataOutput = {
 	date: string
@@ -41,6 +42,7 @@ type DecryptionDataOutput = {
 	paymentId: number
 	udf7: string
 	udf8: string
+	id: string
 }
 
 declare module '@404-software/benefit' {

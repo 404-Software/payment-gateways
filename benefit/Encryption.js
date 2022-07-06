@@ -40,11 +40,15 @@ function decrypt(data) {
 	const aesCbc = new aesjs.ModeOfOperation.cbc(enckey, rkEncryptionIv)
 	const decryptedBytes = aesCbc.decrypt(encryptedBytes)
 	const decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes)
-	const cleanedText = decodeURIComponent(decryptedText).replace(/\x0F/g, '')
+	// eslint-disable-next-line no-control-regex
+	const cleanedText = decodeURIComponent(decryptedText)
 	const stringifiedText = JSON.stringify(cleanedText).replace(/\\b/g, '')
-	const parsedJson = JSON.parse(stringifiedText)
+	const parsedJson = JSON.parse(JSON.parse(stringifiedText))
 
-	return parsedJson[0]
+	const result = parsedJson[0]
+	const id = result.trackId.split('-')[0]
+
+	return { ...result, id }
 }
 
 module.exports = { encrypt, decrypt }
