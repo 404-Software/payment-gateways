@@ -41,7 +41,8 @@ function decrypt(data) {
 	const decryptedBytes = aesCbc.decrypt(encryptedBytes)
 	const decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes)
 	const cleanedText = decodeURIComponent(decryptedText).replace(/\x0F/g, '')
-	const parsedJson = JSON.parse(cleanedText)
+	const stringifiedText = JSON.stringify(cleanedText).replace(/\\b/g, '')
+	const parsedJson = JSON.parse(stringifiedText)
 
 	return parsedJson[0]
 }
