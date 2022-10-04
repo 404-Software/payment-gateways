@@ -31,12 +31,14 @@ function decrypt(data) {
 		)
 
 	const invalidValuesFilter = val => {
-		const invalidValues = [7]
+		const invalidValues = [7, 8]
 
 		return !invalidValues.includes(val)
 	}
 
-	const encryptedHex = data.buffer.toString()
+	const encryptedHex = new URLSearchParams(data.buffer.toString()).get(
+		'trandata',
+	)
 	const enckey = aesjs.utils.utf8.toBytes(key)
 	const rkEncryptionIv = aesjs.utils.utf8.toBytes(iv)
 	const encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex)
