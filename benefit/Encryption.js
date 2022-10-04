@@ -30,16 +30,22 @@ function decrypt(data) {
 			'The BENEFIT_IV & BENEFIT_TERMINAL_RESOURCE_KEY environment variables must be set OR provide a config to the function',
 		)
 
+	const invalidValuesFilter = val => {
+		const invalidValues = [7]
+
+		return !invalidValues.includes(val)
+	}
+
 	const encryptedHex = data.buffer.toString()
 	const enckey = aesjs.utils.utf8.toBytes(key)
 	const rkEncryptionIv = aesjs.utils.utf8.toBytes(iv)
 	const encryptedBytes = aesjs.utils.hex.toBytes(encryptedHex)
 	const aesCbc = new aesjs.ModeOfOperation.cbc(enckey, rkEncryptionIv)
-	const decryptedBytes = aesCbc.decrypt(encryptedBytes)
+	const decryptedBytes = aesCbc
+		.decrypt(encryptedBytes)
+		.filter(invalidValuesFilter)
 	const decryptedText = aesjs.utils.utf8.fromBytes(decryptedBytes)
-	const result = JSON.parse(
-		decodeURIComponent(decryptedText).replace(/\].*/, '').substring(1),
-	)
+	const [result] = JSON.parse(decodeURIComponent(decryptedText))
 
 	const id = result.trackId.split('-')[0]
 
