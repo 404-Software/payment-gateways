@@ -6,6 +6,7 @@
 	"license": "UNLICENSED",
 	"devDependencies": {
 		"@404-software/eslint-config": "^1.0.10",
+		"dotenv": "^16.0.3",
 		"eslint": "^8.14.0",
 		"prettier": "^2.6.2"
 	},

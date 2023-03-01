@@ -25,8 +25,15 @@ type CredimaxSession = {
 	config?: Config
 }
 
+type CredimaxResponse = {
+	successIndicator: string
+	paymentUrl: string
+}
+
 declare module '@404-software/credimax' {
-	function CreateCredimaxSession(data: CredimaxSession): Promise<string>
+	function CreateCredimaxSession(
+		data: CredimaxSession,
+	): Promise<CredimaxResponse>
 
 	export default CreateCredimaxSession
 }

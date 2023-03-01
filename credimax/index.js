@@ -13,8 +13,7 @@ module.exports = async ({ order, address, config }) => {
 			'The CREDIMAX_SHOP_NAME, CREDIMAX_RETURN_URL, CREDIMAX_CANCEL_URL, CREDIMAX_MERCHANT_ID and CREDIMAX_API_PASSWORD environment variables must be set OR provide a config to the function',
 		)
 
-	let sessionId = ''
-	await axios({
+	const { data } = await axios({
 		method: 'POST',
 		url: `https://credimax.gateway.mastercard.com/api/rest/version/64/merchant/${merchantId}/session`,
 		auth: { username: `merchant.${merchantId}`, password: apiPassword },
@@ -54,9 +53,9 @@ module.exports = async ({ order, address, config }) => {
 			transaction: { source: 'INTERNET' },
 		},
 	})
-		.then(({ data }) => (sessionId = data.session.id))
-		// eslint-disable-next-line no-console
-		.catch(e => console.error(e))
 
-	return `https://credimax.gateway.mastercard.com/checkout/entry/${sessionId}`
+	return {
+		successIndicator: data.successIndicator,
+		paymentUrl: `https://credimax.gateway.mastercard.com/checkout/entry/${data.session.id}`,
+	}
 }
