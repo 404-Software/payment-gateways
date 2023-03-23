@@ -87,9 +87,19 @@ export function decrypt(
 		),
 	)
 
-	const [result] = JSON.parse(decodedText)
+	try {
+		const [result] = JSON.parse(decodedText)
 
-	const id = result.trackId.split('-')[0]
+		const id = result.trackId.split('-')[0]
 
-	return { id, ...result }
+		return { id, ...result }
+	} catch {
+		throw new Error(
+			JSON.stringify(
+				{ message: 'Error parsing trandata', decryptedText },
+				null,
+				2,
+			),
+		)
+	}
 }
