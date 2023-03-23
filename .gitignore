@@ -20,5 +20,6 @@ next.config.original*
 .serverless_nextjs
 keystore
 build
+.vscode
 yarn-error.log
-google-services.json
+lib

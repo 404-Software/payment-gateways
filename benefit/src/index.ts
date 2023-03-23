@@ -1,7 +1,30 @@
-const { encrypt, decrypt } = require('./Encryption')
-const axios = require('axios')
+import { decrypt, encrypt } from './utils/encryption'
+import axios from 'axios'
 
-const CreateBenefitSession = async ({ config, order }) => {
+interface BenefitOrder {
+	id: string | number
+	total: string | number
+}
+
+interface BenefitConfig {
+	tranportalId: string
+	tranportalPassword: string
+	terminalResourcekey: string
+	iv: string
+	cancelUrl: string
+	returnUrl: string
+	testMode?: boolean
+}
+
+interface BenefitSession {
+	order: BenefitOrder
+	config?: BenefitConfig
+}
+
+export const CreateBenefitSession = async ({
+	config,
+	order,
+}: BenefitSession) => {
 	const tranportalId = process.env.BENEFIT_TRANPORTAL_ID || config?.tranportalId
 	const tranportalPassword =
 		process.env.BENEFIT_TRANPORTAL_PASSWORD || config?.tranportalPassword
@@ -35,6 +58,7 @@ const CreateBenefitSession = async ({ config, order }) => {
 			responseURL: returnUrl,
 			errorURL: cancelUrl,
 			langid: 'USA',
+			udf1: `${order.id}`,
 		},
 	]
 
@@ -46,9 +70,11 @@ const CreateBenefitSession = async ({ config, order }) => {
 		testMode ? 'test.' : ''
 	}benefit-gateway.bh/payment/API/hosted.htm`
 
-	const res = await axios.post(apiUrl, [{ trandata, id: tranportalId }])
+	const res = await axios.post<Array<{ result: string }>>(apiUrl, [
+		{ trandata, id: tranportalId },
+	])
 
 	return res.data[0].result
 }
 
-module.exports = { CreateBenefitSession, DecryptBenefitTrandata: decrypt }
+export const DecryptBenefitTrandata = decrypt

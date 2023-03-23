@@ -1,6 +1,40 @@
-const axios = require('axios')
+import axios from 'axios'
 
-module.exports = async ({ order, address, config }) => {
+interface CredimaxOrder {
+	id: string | number
+	total: string | number
+}
+
+interface CredimaxAddress {
+	city: string
+	street?: string
+}
+
+interface CredimaxConfig {
+	merchantId: string
+	APIPassword: string
+	cancelUrl: string
+	returnUrl: string
+	shopName: string
+	testMode?: boolean
+}
+
+interface CredimaxSession {
+	order: CredimaxOrder
+	address: CredimaxAddress
+	config?: CredimaxConfig
+}
+
+interface CredimaxResponse {
+	successIndicator: string
+	paymentUrl: string
+}
+
+export const CreateCredimaxSession = async ({
+	order,
+	address,
+	config,
+}: CredimaxSession): Promise<CredimaxResponse> => {
 	const merchantId = process.env.CREDIMAX_MERCHANT_ID || config?.merchantId
 	const apiPassword = process.env.CREDIMAX_API_PASSWORD || config?.APIPassword
 	const cancelUrl = process.env.CREDIMAX_CANCEL_URL || config?.cancelUrl
