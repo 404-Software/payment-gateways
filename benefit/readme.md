@@ -47,7 +47,7 @@ alternatively, you can pass these details to the config of the function directly
 ```typescript
 import { CreateBenefitSession } from '@404-software/benefit'
 
-const paymentUrl = await CreateBenefitSession({
+const { paymentUrl } = await CreateBenefitSession({
 	order: {
 		id: '123',
 		total: 20.5,

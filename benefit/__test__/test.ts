@@ -14,7 +14,7 @@ describe('createSession', () => {
 
 		console.log(session)
 
-		expect(typeof session).toBe('string')
+		expect(typeof session.paymentUrl).toBe('string')
 	})
 })
 

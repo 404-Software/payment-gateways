@@ -7,12 +7,12 @@ interface BenefitOrder {
 }
 
 interface BenefitConfig {
-	tranportalId: string
-	tranportalPassword: string
-	terminalResourcekey: string
-	iv: string
-	cancelUrl: string
-	returnUrl: string
+	tranportalId?: string
+	tranportalPassword?: string
+	terminalResourcekey?: string
+	iv?: string
+	cancelUrl?: string
+	returnUrl?: string
 	testMode?: boolean
 }
 
@@ -25,14 +25,14 @@ export const CreateBenefitSession = async ({
 	config,
 	order,
 }: BenefitSession) => {
-	const tranportalId = process.env.BENEFIT_TRANPORTAL_ID || config?.tranportalId
+	const tranportalId = config?.tranportalId || process.env.BENEFIT_TRANPORTAL_ID
 	const tranportalPassword =
-		process.env.BENEFIT_TRANPORTAL_PASSWORD || config?.tranportalPassword
+		config?.tranportalPassword || process.env.BENEFIT_TRANPORTAL_PASSWORD
 	const terminalResourcekey =
-		process.env.BENEFIT_TERMINAL_RESOURCE_KEY || config?.terminalResourcekey
-	const cancelUrl = process.env.BENEFIT_CANCEL_URL || config?.cancelUrl
-	const returnUrl = process.env.BENEFIT_RETURN_URL || config?.returnUrl
-	const testMode = process.env.BENEFIT_TEST_MODE === 'true' || config?.testMode
+		config?.terminalResourcekey || process.env.BENEFIT_TERMINAL_RESOURCE_KEY
+	const cancelUrl = config?.cancelUrl || process.env.BENEFIT_CANCEL_URL
+	const returnUrl = config?.returnUrl || process.env.BENEFIT_RETURN_URL
+	const testMode = config?.testMode || process.env.BENEFIT_TEST_MODE === 'true'
 
 	if (
 		!tranportalId ||
@@ -74,7 +74,12 @@ export const CreateBenefitSession = async ({
 		{ trandata, id: tranportalId },
 	])
 
-	return res.data[0].result
+	const url = res.data[0].result
+
+	return {
+		paymentId: url.split('PaymentID=')[1],
+		paymentUrl: url,
+	}
 }
 
 export const DecryptBenefitTrandata = decrypt

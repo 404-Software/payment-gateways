@@ -11,11 +11,11 @@ interface CredimaxAddress {
 }
 
 interface CredimaxConfig {
-	merchantId: string
-	APIPassword: string
-	cancelUrl: string
-	returnUrl: string
-	shopName: string
+	merchantId?: string
+	APIPassword?: string
+	cancelUrl?: string
+	returnUrl?: string
+	shopName?: string
 	testMode?: boolean
 }
 
@@ -35,12 +35,12 @@ export const CreateCredimaxSession = async ({
 	address,
 	config,
 }: CredimaxSession): Promise<CredimaxResponse> => {
-	const merchantId = process.env.CREDIMAX_MERCHANT_ID || config?.merchantId
-	const apiPassword = process.env.CREDIMAX_API_PASSWORD || config?.APIPassword
-	const cancelUrl = process.env.CREDIMAX_CANCEL_URL || config?.cancelUrl
-	const returnUrl = process.env.CREDIMAX_RETURN_URL || config?.returnUrl
-	const shopName = process.env.CREDIMAX_SHOP_NAME || config?.shopName
-	const testMode = process.env.CREDIMAX_TEST_MODE === 'true' || config?.testMode
+	const merchantId = config?.merchantId || process.env.CREDIMAX_MERCHANT_ID
+	const apiPassword = config?.APIPassword || process.env.CREDIMAX_API_PASSWORD
+	const cancelUrl = config?.cancelUrl || process.env.CREDIMAX_CANCEL_URL
+	const returnUrl = config?.returnUrl || process.env.CREDIMAX_RETURN_URL
+	const shopName = config?.shopName || process.env.CREDIMAX_SHOP_NAME
+	const testMode = config?.testMode || process.env.CREDIMAX_TEST_MODE === 'true'
 
 	if (!merchantId || !apiPassword || !cancelUrl || !returnUrl || !shopName)
 		throw new Error(
