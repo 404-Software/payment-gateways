@@ -28,6 +28,7 @@ interface CredimaxSession {
 interface CredimaxResponse {
 	successIndicator: string
 	paymentUrl: string
+	reference: string
 }
 
 export const CreateCredimaxSession = async ({
@@ -80,6 +81,7 @@ export const CreateCredimaxSession = async ({
 			order: {
 				id: `${order.id}-${Math.round(new Date().getTime() / 1000)}`,
 				invoiceNumber: `${order.id}`,
+				reference: `${order.id}`,
 				currency: 'BHD',
 				amount: `${order.total}`,
 				description: `Order Ref: ${order.id}`,
@@ -91,5 +93,6 @@ export const CreateCredimaxSession = async ({
 	return {
 		successIndicator: data.successIndicator,
 		paymentUrl: `https://credimax.gateway.mastercard.com/checkout/entry/${data.session.id}`,
+		reference: data.successIndicator,
 	}
 }

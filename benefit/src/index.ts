@@ -21,10 +21,16 @@ interface BenefitSession {
 	config?: BenefitConfig
 }
 
+interface BenefitResponse {
+	paymentId: string
+	paymentUrl: string
+	reference: string
+}
+
 export const CreateBenefitSession = async ({
 	config,
 	order,
-}: BenefitSession) => {
+}: BenefitSession): Promise<BenefitResponse> => {
 	const tranportalId = config?.tranportalId || process.env.BENEFIT_TRANPORTAL_ID
 	const tranportalPassword =
 		config?.tranportalPassword || process.env.BENEFIT_TRANPORTAL_PASSWORD
@@ -75,10 +81,12 @@ export const CreateBenefitSession = async ({
 	])
 
 	const url = res.data[0].result
+	const paymentId = url.split('PaymentID=')[1]
 
 	return {
-		paymentId: url.split('PaymentID=')[1],
+		paymentId,
 		paymentUrl: url,
+		reference: paymentId,
 	}
 }
 
