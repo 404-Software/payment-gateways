@@ -2,7 +2,7 @@
 
 This package helps in generating a Credimax (Bahrain) payment session using a link that can be passed to the user to pay using Credimax's hosted session.
 
-**API VERSION: 64**
+**API VERSION: 70**
 
 <br/><br/>
 
@@ -16,7 +16,6 @@ CREDIMAX_RETURN_URL="Website's return URL"
 CREDIMAX_CANCEL_URL="Website's cancel URL"
 CREDIMAX_MERCHANT_ID="Merchant ID"
 CREDIMAX_API_PASSWORD="API Password"
-CREDIMAX_TEST_MODE=false
 ```
 
 alternatively, you can pass these details to the config of the function directly mentioned in the next step.
@@ -39,7 +38,6 @@ alternatively, you can pass these details to the config of the function directly
     cancelUrl: string
     returnUrl: string
     shopName: string
-    testMode?: boolean // defaults to false
   }
 }
 ```

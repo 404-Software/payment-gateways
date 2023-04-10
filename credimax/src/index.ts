@@ -16,7 +16,6 @@ interface CredimaxConfig {
 	cancelUrl?: string
 	returnUrl?: string
 	shopName?: string
-	testMode?: boolean
 }
 
 interface CredimaxSession {
@@ -41,7 +40,6 @@ export const CreateCredimaxSession = async ({
 	const cancelUrl = config?.cancelUrl || process.env.CREDIMAX_CANCEL_URL
 	const returnUrl = config?.returnUrl || process.env.CREDIMAX_RETURN_URL
 	const shopName = config?.shopName || process.env.CREDIMAX_SHOP_NAME
-	const testMode = config?.testMode || process.env.CREDIMAX_TEST_MODE === 'true'
 
 	if (!merchantId || !apiPassword || !cancelUrl || !returnUrl || !shopName)
 		throw new Error(
@@ -50,17 +48,16 @@ export const CreateCredimaxSession = async ({
 
 	const { data } = await axios({
 		method: 'POST',
-		url: `https://credimax.gateway.mastercard.com/api/rest/version/64/merchant/${merchantId}/session`,
+		url: `https://credimax.gateway.mastercard.com/api/rest/version/70/merchant/${merchantId}/session`,
 		auth: { username: `merchant.${merchantId}`, password: apiPassword },
 		data: {
 			apiOperation: 'INITIATE_CHECKOUT',
 			interaction: {
-				operation: testMode ? 'AUTHORIZE' : 'PURCHASE',
+				operation: 'PURCHASE',
 				action: { '3DSecure': 'MANDATORY' },
 				cancelUrl,
 				returnUrl,
 				locale: 'en',
-				style: { theme: 'default' },
 				displayControl: {
 					billingAddress: 'HIDE',
 					cardSecurityCode: 'MANDATORY',
@@ -92,7 +89,7 @@ export const CreateCredimaxSession = async ({
 
 	return {
 		successIndicator: data.successIndicator,
-		paymentUrl: `https://credimax.gateway.mastercard.com/checkout/entry/${data.session.id}`,
+		paymentUrl: `https://credimax.gateway.mastercard.com/checkout/entry/${data.session.id}?checkoutVersion=1.0.0`,
 		reference: data.successIndicator,
 	}
 }
