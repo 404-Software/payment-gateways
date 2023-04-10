@@ -20,7 +20,7 @@ interface CredimaxConfig {
 
 interface CredimaxSession {
 	order: CredimaxOrder
-	address: CredimaxAddress
+	address?: CredimaxAddress
 	config?: CredimaxConfig
 }
 
@@ -71,8 +71,8 @@ export const CreateCredimaxSession = async ({
 			billing: {
 				address: {
 					country: 'BHR',
-					city: address.city,
-					street: address.street,
+					city: address?.city,
+					street: address?.street,
 				},
 			},
 			order: {
