@@ -16,6 +16,7 @@ interface CredimaxConfig {
 	cancelUrl?: string
 	returnUrl?: string
 	shopName?: string
+	logo?: string
 }
 
 interface CredimaxSession {
@@ -40,6 +41,7 @@ export const CreateCredimaxSession = async ({
 	const cancelUrl = config?.cancelUrl || process.env.CREDIMAX_CANCEL_URL
 	const returnUrl = config?.returnUrl || process.env.CREDIMAX_RETURN_URL
 	const shopName = config?.shopName || process.env.CREDIMAX_SHOP_NAME
+	const logo = config?.logo || process.env.CREDIMAX_LOGO
 
 	if (!merchantId || !apiPassword || !cancelUrl || !returnUrl || !shopName)
 		throw new Error(
@@ -66,7 +68,7 @@ export const CreateCredimaxSession = async ({
 					paymentTerms: 'SHOW_IF_SUPPORTED',
 					shipping: 'HIDE',
 				},
-				merchant: { name: shopName },
+				merchant: { name: shopName, logo },
 			},
 			billing: {
 				address: {
