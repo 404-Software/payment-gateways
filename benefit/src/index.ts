@@ -72,8 +72,8 @@ export const CreateBenefitSession = async ({
 		trandata: JSON.stringify(data),
 	})
 
-	const apiUrl = `https://www.${
-		testMode ? 'test.' : ''
+	const apiUrl = `https://${
+		testMode ? 'test.' : 'www.'
 	}benefit-gateway.bh/payment/API/hosted.htm`
 
 	const res = await axios.post<Array<{ result: string }>>(apiUrl, [
