@@ -3,20 +3,29 @@ import axios from 'axios'
 interface CredimaxOrder {
 	id: string | number
 	total: string | number
+	currency?: 'BHD' | 'USD'
+	description?: string
 }
 
 interface CredimaxAddress {
+	country: 'BHR' | 'USA' | 'SAU' | 'ARE' | 'KWT' | 'OMN' | 'QAT'
 	city: string
 	street?: string
 }
 
 interface CredimaxConfig {
-	merchantId?: string
-	APIPassword?: string
-	cancelUrl?: string
-	returnUrl?: string
-	shopName?: string
-	logo?: string
+	credentials?: {
+		id?: string
+		password?: string
+	}
+	urls?: {
+		returnUrl?: string
+		cancelUrl?: string
+	}
+	information?: {
+		name?: string
+		logo?: string
+	}
 }
 
 interface CredimaxSession {
@@ -36,22 +45,23 @@ export const CreateCredimaxSession = async ({
 	address,
 	config,
 }: CredimaxSession): Promise<CredimaxResponse> => {
-	const merchantId = config?.merchantId || process.env.CREDIMAX_MERCHANT_ID
-	const apiPassword = config?.APIPassword || process.env.CREDIMAX_API_PASSWORD
-	const cancelUrl = config?.cancelUrl || process.env.CREDIMAX_CANCEL_URL
-	const returnUrl = config?.returnUrl || process.env.CREDIMAX_RETURN_URL
-	const shopName = config?.shopName || process.env.CREDIMAX_SHOP_NAME
-	const logo = config?.logo || process.env.CREDIMAX_LOGO
+	const id = config?.credentials?.id || process.env.CREDIMAX_MERCHANT_ID
+	const password =
+		config?.credentials?.password || process.env.CREDIMAX_API_PASSWORD
+	const cancelUrl = config?.urls?.cancelUrl || process.env.CREDIMAX_CANCEL_URL
+	const returnUrl = config?.urls?.returnUrl || process.env.CREDIMAX_RETURN_URL
+	const shopName = config?.information?.name || process.env.CREDIMAX_SHOP_NAME
+	const logo = config?.information?.logo || process.env.CREDIMAX_LOGO
 
-	if (!merchantId || !apiPassword || !cancelUrl || !returnUrl || !shopName)
+	if (!id || !password || !cancelUrl || !returnUrl)
 		throw new Error(
 			'The CREDIMAX_SHOP_NAME, CREDIMAX_RETURN_URL, CREDIMAX_CANCEL_URL, CREDIMAX_MERCHANT_ID and CREDIMAX_API_PASSWORD environment variables must be set OR provide a config to the function',
 		)
 
 	const { data } = await axios({
 		method: 'POST',
-		url: `https://credimax.gateway.mastercard.com/api/rest/version/70/merchant/${merchantId}/session`,
-		auth: { username: `merchant.${merchantId}`, password: apiPassword },
+		url: `https://credimax.gateway.mastercard.com/api/rest/version/70/merchant/${id}/session`,
+		auth: { username: `merchant.${id}`, password },
 		data: {
 			apiOperation: 'INITIATE_CHECKOUT',
 			interaction: {
@@ -72,7 +82,7 @@ export const CreateCredimaxSession = async ({
 			},
 			billing: {
 				address: {
-					country: 'BHR',
+					country: address?.country,
 					city: address?.city,
 					street: address?.street,
 				},
@@ -81,9 +91,9 @@ export const CreateCredimaxSession = async ({
 				id: `${order.id}-${Math.round(new Date().getTime() / 1000)}`,
 				invoiceNumber: `${order.id}`,
 				reference: `${order.id}`,
-				currency: 'BHD',
+				currency: order.currency || 'BHD',
 				amount: `${order.total}`,
-				description: `Order Ref: ${order.id}`,
+				description: order.description,
 			},
 			transaction: { source: 'INTERNET' },
 		},

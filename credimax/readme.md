@@ -27,17 +27,27 @@ alternatively, you can pass these details to the config of the function directly
   order: {
     id: string | number
     total: string | number
+    currency?: 'BHD' | 'USD'
+    description?: string
   },
   address: {
+	  country: 'BHR' | 'USA' | 'SAU' | 'ARE' | 'KWT' | 'OMN' | 'QAT'
     city: string
-    street: string
+    street?: string
   },
   config: { //ONLY if not using environment variables
-    merchantId: string
-    APIPassword: string
-    cancelUrl: string
-    returnUrl: string
-    shopName: string
+    credentials?: {
+      id?: string
+      password?: string
+    }
+    urls?: {
+      returnUrl?: string
+      cancelUrl?: string
+    }
+    information?: {
+      name?: string
+      logo?: string
+    }
   }
 }
 ```

@@ -7,12 +7,20 @@ describe('createSession', () => {
 	it('should create a session', async () => {
 		const session = await CreateCredimaxSession({
 			order: {
-				id: `123${Math.random()}`,
-				total: '0.1',
+				id: '123',
+				total: '100',
+				currency: 'USD',
+				description: 'test',
 			},
 			address: {
+				country: 'SAU',
 				city: 'Manama',
 				street: 'Al Seef',
+			},
+			config: {
+				information: {
+					name: 'hello',
+				},
 			},
 		})
 
