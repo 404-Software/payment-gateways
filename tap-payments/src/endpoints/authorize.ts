@@ -119,7 +119,7 @@ export interface CreateAuthorizeResponse {
 const createAuthorize = async (
 	data: CreateAuthorizeData,
 ): Promise<CreateAuthorizeResponse> => {
-	const response = await client.post('/v2/authorize', data)
+	const response = await client.post('authorize', data)
 	return response.data
 }
 

@@ -2,7 +2,7 @@ import client from '../client'
 
 export interface CreateChargeData {
 	amount: number
-	currency: string
+	currency: 'BHD' | 'KWD' | 'SAR' | 'EGP'
 	customer_initiated?: boolean
 	threeDSecure?: boolean
 	save_card?: boolean
@@ -30,7 +30,7 @@ export interface CreateChargeData {
 	customer: {
 		first_name: string
 		middle_name?: string
-		last_name: string
+		last_name?: string
 		email: string
 		phone?: {
 			country_code?: number
@@ -42,7 +42,15 @@ export interface CreateChargeData {
 		id: number
 	}
 	source: {
-		id: string
+		id:
+			| 'src_all'
+			| 'src_card'
+			| 'src_sa.mada'
+			| 'src_kw.knet'
+			| 'src_bh.benefit'
+			| 'src_om.omannet'
+			| 'src_eg.fawry'
+			| 'src_apple_pay'
 	}
 	post?: {
 		url?: string
@@ -130,7 +138,7 @@ export interface CreateChargeResponse {
 const createCharge = async (
 	data: CreateChargeData,
 ): Promise<CreateChargeResponse> => {
-	const response = await client.post('/v2/charges', data)
+	const response = await client.post('/charges', data)
 	return response.data
 }
 

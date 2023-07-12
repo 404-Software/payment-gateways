@@ -55,7 +55,7 @@ export interface CreateTokenCardResponse {
 const createTokenCard = async (
 	data: CreateTokenCardData,
 ): Promise<CreateTokenCardResponse> => {
-	const response = await client.post('/v2/tokens', data)
+	const response = await client.post('tokens', data)
 	return response.data
 }
 
@@ -103,7 +103,7 @@ export interface CreateTokenCardSavedResponse {
 const createTokenSavedCard = async (
 	data: CreateTokenSavedCardData,
 ): Promise<CreateTokenCardSavedResponse> => {
-	const response = await client.post('/v2/tokens', data)
+	const response = await client.post('tokens', data)
 	return response.data
 }
 
@@ -151,7 +151,7 @@ export interface CreateTokenApplePayResponse {
 const createTokenApplePay = async (
 	data: CreateTokenApplePayData,
 ): Promise<CreateTokenApplePayResponse> => {
-	const response = await client.post('/v2/tokens', {
+	const response = await client.post('tokens', {
 		type: 'applepay',
 		...data,
 	})
@@ -189,7 +189,7 @@ type RetrieveTokenResponse = {
 const retrieveToken = async (
 	data: RetrieveTokenData,
 ): Promise<RetrieveTokenResponse> => {
-	const response = await client.get(`/tokens/${data.token_id}`)
+	const response = await client.get(`tokens/${data.token_id}`)
 	return response.data
 }
 
