@@ -165,6 +165,7 @@ export interface RetrieveChargeResponse {
 		udf1?: string
 	}
 	transaction: {
+		url?: string
 		authorization_id: string
 		timezone: string
 		created: string
